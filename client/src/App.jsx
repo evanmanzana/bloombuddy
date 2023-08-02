@@ -3,12 +3,14 @@ import * as ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
-
 import Profile from "./pages/Profile";
 import PlantPage from "./pages/PlantPage";
 import IndPlantPage from "./pages/IndPlantPage";
 import LoginPage from "./pages/LoginPage";
 import NavBar from "./components/NavBar";
+import Collection from "./pages/Collection";
+import Tasks from "./pages/Tasks";
+import Blog from "./pages/Blog";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,6 +43,15 @@ function App() {
           currentUser={currentUser}
         />
         <Route
+          path="/collection"
+          element={
+            <Collection
+              setIsLoggedIn={setIsLoggedIn}
+              setCurrentUser={setCurrentUser}
+            />
+          }
+        />
+        <Route
           path="/plants"
           element={<PlantPage currentUser={currentUser} />}
           // plants={plants}
@@ -49,6 +60,8 @@ function App() {
           path="/plants/:id"
           element={<IndPlantPage currentUser={currentUser} />}
         />
+        <Route path="/blog" element={<Blog currentUser={currentUser} />} />
+        <Route path="/tasks" element={<Tasks currentUser={currentUser} />} />
         <Route
           element={
             <LoginPage

@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function LeftTray({
+function RightTray({
   currentUser,
   setIsLoggedIn,
   setCurrentUser,
-  handleLeftTrayClick,
+  handleRightTrayClick,
 }) {
   const navigate = useNavigate();
 
@@ -22,13 +22,21 @@ function LeftTray({
   }
 
   return (
-    <div className="flex flex-col fixed left-20 items-center w-60 pt-8 h-2/3 bg-zinc-600 text-neutral-300 m-0 border-2 border-neutral-300">
+    <div className="flex flex-col fixed right-2 items-center w-60 pt-8 h-2/3 border-2 border-black">
+      <div
+        onClick={() => {
+          handleRightTrayClick();
+        }}
+      >
+        X
+      </div>
       <div className="text-xl border-b-2 border-black">{currentUser.name}</div>
 
       <div
         className="cursor-pointer"
         onClick={() => {
-          handleLeftTrayClick();
+          navigate("/account/settings");
+          handleRightTrayClick();
         }}
       >
         Settings
@@ -43,4 +51,4 @@ function LeftTray({
   );
 }
 
-export default LeftTray;
+export default RightTray;

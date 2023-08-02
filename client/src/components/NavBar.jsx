@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/headerlogo.png";
 // import { useNavigate } from "react-router-dom";
-import LeftTray from "./LeftTray";
+import RightTray from "./RightTray";
 import burger from "../assets/hamburger.png";
 
 function NavBar({ currentUser, setIsLoggedIn, setCurrentUser }) {
-  // const navigate = useNavigate();
-  const [isLeftTrayVisible, setIsLeftTrayVisible] = useState(false);
+  const navigate = useNavigate();
+  const [isRightTrayVisible, setIsRightTrayVisible] = useState(false);
 
-  const handleLeftTrayClick = () => {
-    setIsLeftTrayVisible(!isLeftTrayVisible);
+  const handleRightTrayClick = () => {
+    setIsRightTrayVisible(!isRightTrayVisible);
   };
   return (
     <>
       <div>
+        <div className="h-4 bg-black"></div>
         <div className="flex justify-between items-center p-4">
           <div className="flex items-center">
             <a href="">
@@ -24,55 +25,68 @@ function NavBar({ currentUser, setIsLoggedIn, setCurrentUser }) {
                 alt="Logo"
               />
             </a>
-            <a href="/">
+            <a href="#">
               <img
                 src={logo}
                 className="p-2 h-auto w-14 leading-4"
                 alt="Logo"
+                onClick={() => {
+                  navigate("/");
+                }}
               />
             </a>
             <a
-              href="/collection"
+              href="#"
               className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4"
+              onClick={() => {
+                navigate("/collection");
+              }}
             >
               Collection
             </a>
             <a
-              href="/plants"
+              href="#"
               className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4"
+              onClick={() => {
+                navigate("/plants");
+              }}
             >
               Plants
             </a>
             <a
-              href="/tasks"
+              href="#"
               className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4"
+              onClick={() => {
+                navigate("/tasks");
+              }}
             >
               Tasks
             </a>
             <a
-              href="/blog"
+              href="#"
               className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4"
+              onClick={() => {
+                navigate("/blog");
+              }}
             >
               Blog
             </a>
           </div>
           <div className="">
-            {isLeftTrayVisible && (
-              <LeftTray
+            {isRightTrayVisible && (
+              <RightTray
                 currentUser={currentUser}
                 setIsLoggedIn={setIsLoggedIn}
                 setCurrentUser={setCurrentUser}
-                handleLeftTrayClick={handleLeftTrayClick}
+                handleRightTrayClick={handleRightTrayClick}
               />
             )}
-            <Link to="/profile">
-              <button
-                onClick={handleLeftTrayClick}
-                className="p-4 text-2xl font-ibarra border-black border-2 rounded-full leading-4"
-              >
-                Profile
-              </button>
-            </Link>
+            <button
+              onClick={handleRightTrayClick}
+              className="p-4 text-2xl font-ibarra border-black border-2 rounded-full leading-4"
+            >
+              Profile
+            </button>
           </div>
         </div>
       </div>

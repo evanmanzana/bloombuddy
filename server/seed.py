@@ -4,6 +4,7 @@ from faker import Faker
 import json
 import time
 from config import api_key
+import random
 fake = Faker()
 
 
@@ -92,19 +93,32 @@ def seed_plants():
         else:
             print("Seeding plants failed.")
 
+
+
 def seed_care_tasks():
     # Create the application context
     with app.app_context():
         users = User.query.all()
-        for _ in range(100):
-            user = fake.random_element(users)
-            care_task = CareTask(
-                name=fake.word(),
-                desc=fake.text(),
-                completed=fake.boolean(),
-                user=user
-            )
-            db.session.add(care_task)
+        plants = Plant.query.all()
+
+        for user in users:
+            # Get a random number of plants to add to the user's collection (e.g., between 5 and 10)
+            num_plants = random.randint(5, 10)
+            # Shuffle the list of plants to get random plants
+            random_plants = random.sample(plants, num_plants)
+
+            for plant in random_plants:
+                # Create a care task for each plant and associate it with the user
+                care_task = CareTask(
+                    name=fake.word(),
+                    desc=fake.text(),
+                    completed=fake.boolean(),
+                    user=user
+                )
+                # Associate the random plant with the care task
+                care = Care(plant=plant, care_task=care_task)
+                db.session.add(care_task)
+                db.session.add(care)
 
         db.session.commit()
         print("Seeding care tasks completed successfully.")

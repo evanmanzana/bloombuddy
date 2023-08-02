@@ -40,7 +40,7 @@ function PlantCard() {
 
   return (
     <>
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center font-ibarra">
         <div className="grid grid-cols-4 gap-4 p-6">
           {plants.map((plant) => (
             <div
@@ -56,6 +56,9 @@ function PlantCard() {
               <img src={plant.img} alt="Plant" className="w-32 h-32" />
               <p className="font-bold">Latin name: {plant.latin}</p>
               <p className="font-bold">Plant Family: {plant.family}</p>
+              <p className="p-4 flex justify-center hover:font-bold hover:text-green-900 text-lg">
+                Learn More!
+              </p>
             </div>
           ))}
         </div>
