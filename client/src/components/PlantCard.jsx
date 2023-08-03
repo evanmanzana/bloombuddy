@@ -46,19 +46,33 @@ function PlantCard() {
             <div
               key={plant.id}
               onClick={() => getIndPlant(plant.id)}
-              className="border-2 border-gray-400 p-4 rounded-md hover:border-black hover: cursor-pointer"
+              className="border-2 border-green-900 rounded-lg hover:border-green-400 hover:cursor-pointer relative overflow-hidden "
+              style={{
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                transition: "backdrop-filter 0.5s",
+              }}
             >
-              <p className="font-bold">
-                {JSON.parse(plant.common_names)
-                  ? JSON.parse(plant.common_names)[0]
-                  : plant.latin}
-              </p>
-              <img src={plant.img} alt="Plant" className="w-32 h-32" />
-              <p className="font-bold">Latin name: {plant.latin}</p>
-              <p className="font-bold">Plant Family: {plant.family}</p>
-              <p className="p-4 flex justify-center hover:font-bold hover:text-green-900 text-lg">
-                Learn More!
-              </p>
+              <div
+                className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-0 hover:opacity-20 transition-opacity"
+                style={{
+                  backdropFilter: "blur(5px)", // Adjust blur as needed
+                }}
+              />
+              <img
+                src={plant.img}
+                alt="Plant"
+                className="w-full h-80 rounded-md"
+              />
+              <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-black text-center opacity-0 hover:opacity-100 transition-opacity">
+                <p className="font-bold text-white text-4xl bg-gray-500">
+                  {JSON.parse(plant.common_names)
+                    ? JSON.parse(plant.common_names)[0]
+                    : plant.latin}
+                </p>
+                {/* <p className="font-bold">Latin name: {plant.latin}</p>
+                <p className="font-bold">Plant Family: {plant.family}</p> */}
+              </div>
             </div>
           ))}
         </div>

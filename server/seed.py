@@ -1,10 +1,10 @@
 import requests
-from app import app, db, User, Plant, CareLog, CareTask
+from app import app, db, User, Plant, CareLog, CareTask, UserPlant
 from faker import Faker
 import json
 import time
 from config import api_key
-import random
+from random import random, randint, sample, choice as rc
 fake = Faker()
 
 
@@ -44,7 +44,6 @@ def  fetch_data_from_api_id(item):
         return None
 
 
-
 def seed_users():
     users = []
     for _ in range(10):
@@ -56,7 +55,17 @@ def seed_users():
         )
         users.append(user)
 
+        preset_user = User(
+        id=11,
+        name="Evan Manzanares",
+        username="test",
+        email="test@test.com",
+        password_hash="password"
+    )
+    users.append(preset_user)
+
     return users
+
 
 def seed_plants():
    
@@ -69,7 +78,7 @@ def seed_plants():
         if combined_data:
             try:
                 for item in data:
-                    time.sleep(1)
+                    time.sleep(.5)
                     new_data = fetch_data_from_api_id(item)
                     plant = Plant(
                         
@@ -93,40 +102,60 @@ def seed_plants():
         else:
             print("Seeding plants failed.")
 
-
-
 def seed_care_tasks():
     # Create the application context
     with app.app_context():
         users = User.query.all()
-        plants = Plant.query.all()
-
-        for user in users:
-            # Get a random number of plants to add to the user's collection (e.g., between 5 and 10)
-            num_plants = random.randint(5, 10)
-            # Shuffle the list of plants to get random plants
-            random_plants = random.sample(plants, num_plants)
-
-            for plant in random_plants:
-                # Create a care task for each plant and associate it with the user
-                care_task = CareTask(
-                    name=fake.word(),
-                    desc=fake.text(),
-                    completed=fake.boolean(),
-                    user=user
-                )
-                # Associate the random plant with the care task
-                care = Care(plant=plant, care_task=care_task)
-                db.session.add(care_task)
-                db.session.add(care)
+        for _ in range(100):
+            user = fake.random_element(users)
+            care_task = CareTask(
+                name=fake.word(),
+                desc=fake.text(),
+                completed=fake.boolean(),
+                user=user
+            )
+            db.session.add(care_task)
 
         db.session.commit()
         print("Seeding care tasks completed successfully.")
 
+
+def seed_user_plants(users):
+    num_plants_per_user = randint(5, 10)
+
+    with app.app_context():
+        for user in users:
+            random_plants = sample(Plant.query.all(), num_plants_per_user)
+
+            # Create a dictionary to store CareTask objects for each user-plant association
+            care_tasks = {}
+
+            for plant in random_plants:
+                # Create a CareTask record for the plant and user association
+                care_task = CareTask(name=fake.word(), desc=fake.text(), completed=fake.boolean(), user=user)
+                care_task = db.session.merge(care_task)
+                care_tasks[plant.id] = care_task
+
+            # Flush the session to commit the CareTask objects to the database
+            db.session.flush()
+
+            for plant in random_plants:
+                # Create the UserPlant record with the corresponding care_task_id
+                user_plant = UserPlant(user_id=user.id, plant_id=plant.id, care_task_id=care_tasks[plant.id].id)
+                db.session.add(user_plant)
+
+        db.session.commit()
+
+
+
+
+
 if __name__ == "__main__":
     with app.app_context():
         print("Clearing db...")
-        db.drop_all()
+        UserPlant.query.delete()
+        User.query.delete()
+        # CareTask.query.delete()
         db.create_all()
 
         print("Seeding users...")
@@ -134,10 +163,15 @@ if __name__ == "__main__":
         db.session.add_all(users)
         db.session.commit()
 
-        print("Seeding plants...")
-        seed_plants()
+        # print("Seeding plants...")
+        # seed_plants()
 
-        print("Seeding care tasks...")
-        seed_care_tasks()
+        # print("Seeding care tasks...")
+        # seed_care_tasks()
+
+        print("Seeding user plants...")
+        seed_user_plants(users)
+
 
         print("Done seeding!")
+        

@@ -25,18 +25,29 @@ function App() {
       }
     });
   }, []);
-  return isLoggedIn ? (
+  return (
     <Router>
       <nav>
         <NavBar
           currentUser={currentUser}
           setIsLoggedIn={setIsLoggedIn}
           setCurrentUser={setCurrentUser}
+          isLoggedIn={isLoggedIn}
         />
       </nav>
       <Routes>
-        <Route path="/" element={<Home />} currentUser={currentUser} />
-        <Route path="/*" element={<ErrorPage />} currentUser={currentUser} />
+        <Route
+          path="/"
+          element={<Home />}
+          currentUser={currentUser}
+          isLoggedIn={isLoggedIn}
+        />
+        <Route
+          path="/*"
+          element={<ErrorPage />}
+          currentUser={currentUser}
+          isLoggedIn={isLoggedIn}
+        />
         <Route
           path="/profile"
           element={<Profile />}
@@ -46,35 +57,35 @@ function App() {
           path="/collection"
           element={
             <Collection
-              setIsLoggedIn={setIsLoggedIn}
+              isLoggedIn={isLoggedIn}
               setCurrentUser={setCurrentUser}
+              currentUser={currentUser}
             />
           }
         />
         <Route
           path="/plants"
-          element={<PlantPage currentUser={currentUser} />}
+          element={
+            <PlantPage currentUser={currentUser} isLoggedIn={isLoggedIn} />
+          }
           // plants={plants}
         />
         <Route
-          path="/plants/:id"
-          element={<IndPlantPage currentUser={currentUser} />}
-        />
-        <Route path="/blog" element={<Blog currentUser={currentUser} />} />
-        <Route path="/tasks" element={<Tasks currentUser={currentUser} />} />
-        <Route
+          path="/plant/:id"
           element={
-            <LoginPage
-              setIsLoggedIn={setIsLoggedIn}
-              setCurrentUser={setCurrentUser}
-            />
+            <IndPlantPage currentUser={currentUser} isLoggedIn={isLoggedIn} />
           }
-          path="/login"
+        />
+        <Route
+          path="/blog"
+          element={<Blog currentUser={currentUser} isLoggedIn={isLoggedIn} />}
+        />
+        <Route
+          path="/tasks"
+          element={<Tasks currentUser={currentUser} isLoggedIn={isLoggedIn} />}
         />
       </Routes>
     </Router>
-  ) : (
-    <LoginPage setIsLoggedIn={setIsLoggedIn} setCurrentUser={setCurrentUser} />
   );
 }
 

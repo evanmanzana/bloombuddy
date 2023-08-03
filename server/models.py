@@ -50,6 +50,7 @@ class User(db.Model, SerializerMixin):
                 raise ValueError("Invalid email address. Email must be a maximum of 40 characters long.")
         return email
 
+    serialize_rules = ("-user_plants.user",)
    
     care_tasks = db.relationship("CareTask", backref="user")
 
@@ -68,10 +69,11 @@ class Plant(db.Model, SerializerMixin):
     watering = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
      
+    serialize_rules = ("-user_plants.plant",)
 
-    serialize_only = ("id", "img", "latin", "family", "common_names", "category", "origin", "climate","ideal_light", "watering")
-    user = db.relationship("User", backref="plants")  # Define the relationship backref
-    care_logs = db.relationship("CareLog", backref="plant")
+    serialize_only = ("id", "img", "latin", "family", "common_names", "category", "origin", "climate","ideal_light", "watering", "user_plants")
+    # user = db.relationship("User", backref="plants")  # Define the relationship backref
+    # user_plants = db.relationship("UserPlant", backref="plant")
 
 class CareLog(db.Model):
     __tablename__ = "care_logs"
@@ -92,4 +94,18 @@ class CareTask(db.Model):
     desc = db.Column(db.String)
     completed = db.Column(db.Boolean)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+class UserPlant(db.Model, SerializerMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    plant_id = db.Column(db.Integer, db.ForeignKey('plants.id'), nullable=False)
+    care_task_id = db.Column(db.Integer, db.ForeignKey('care_tasks.id'), nullable=True)
+    plant_name = db.Column(db.Integer, nullable=True)
+
+    # Define relationships with User, Plant, and CareTask models
+    user = db.relationship('User', backref='user_plants')
+    plant = db.relationship('Plant', backref='user_plants')
+    # care_task = db.relationship('CareTask', backref='user_plants')
+
+    serialize_rules = ("-user.user_plants", "-plant.user_plants")
 

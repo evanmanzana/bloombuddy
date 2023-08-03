@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-function ErrorPage() {
+function ErrorPage({ isLoggedIn, currentUser }) {
+  console.log("isLoggedIn:", isLoggedIn);
+  console.log("currentUser:", currentUser);
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="text-center">
