@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/headerlogo.png";
+import usericon from "../assets/userIcon.png";
 
 function RightTray({
   currentUser,
@@ -58,7 +59,7 @@ function RightTray({
   };
 
   return currentUser ? (
-    <div className="flex flex-col fixed right-2 items-center w-60 pt-8 h-2/3 border-2 bg-white border-black font-ibarra z-50">
+    <div className="flex flex-col fixed right-2 items-center w-60 pt-8 h-2/3  bg-lime-900 rounded-xl font-ibarra z-50 text-amber-50">
       <div
         className="absolute top-4 left-4 cursor-pointer text-lg"
         onClick={() => {
@@ -67,27 +68,34 @@ function RightTray({
       >
         X
       </div>
-      <p className="pt-4 text-xl">Welcome,</p>
-      <div className="text-xl border-b-2 border-black">{currentUser.name}</div>
+      <div className="">
+        <div className="grid grid-cols-2">
+          <p className="pt-8 text-xl">Welcome,</p>
+          <img className="pt-4 pl-4 h-auto w-14" src={currentUser.img} />
+        </div>
+        <div className="text-xl border-b-2 border-amber-50 ">
+          {currentUser.name}
+        </div>
 
-      <div
-        className="cursor-pointer pt-3"
-        onClick={() => {
-          navigate("/account/settings");
-          handleRightTrayClick();
-        }}
-      >
-        Settings
+        <div
+          className="cursor-pointer pt-3 hover:underline"
+          onClick={() => {
+            navigate("/account/settings");
+            handleRightTrayClick();
+          }}
+        >
+          Settings
+        </div>
+        <button
+          onClick={handleLogOut}
+          className=" mt-4 cursor-pointer hover:underline"
+        >
+          Logout
+        </button>
       </div>
-      <button
-        onClick={handleLogOut}
-        className="border-slate-300 rounded border-2 mt-4 cursor-pointer"
-      >
-        Logout
-      </button>
     </div>
   ) : (
-    <div className="flex flex-col fixed right-2 items-center w-60 pt-8 h-2/3 border-2 bg-white border-black font-ibarra z-50">
+    <div className="flex flex-col fixed right-2 items-center w-60 pt-8 h-2/3  bg-lime-900 rounded-xl font-ibarra z-50 text-amber-50">
       <p className="pt-5">You're not logged in!</p>
       <div
         className="absolute top-4 left-4 cursor-pointer text-lg"
@@ -106,7 +114,7 @@ function RightTray({
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="block w-full px-2 py-1 border rounded"
+            className="block w-full px-2 py-1 border-b  bg-lime-800"
           />
         </div>
         <div className="mb-4">
@@ -116,7 +124,7 @@ function RightTray({
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="block w-full px-2 py-1 border rounded"
+            className="block w-full px-2 py-1 border-b bg-lime-800"
           />
         </div>
         {error && (
@@ -126,14 +134,14 @@ function RightTray({
         )}
         <button
           type="submit"
-          className="px-4 py-2 border-slate-300 rounded border-2 mt-4 cursor-pointer"
+          className="ml-2 px-4 py-2 bg-amber-50 text-black rounded-full cursor-pointer"
         >
           Login
         </button>
         <button
           type="button"
           onClick={handleLoginButtonClick}
-          className="ml-2 px-4 py-2 bg-red-500 text-white rounded"
+          className="ml-2 px-4 py-2 bg-amber-50 text-black rounded-full cursor-pointer"
         >
           Cancel
         </button>

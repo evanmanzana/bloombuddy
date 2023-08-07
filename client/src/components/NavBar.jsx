@@ -5,9 +5,16 @@ import RightTray from "./RightTray";
 import burger from "../assets/hamburger.png";
 import xicon from "../assets/xicon.png";
 
-function NavBar({ currentUser, setIsLoggedIn, setCurrentUser, isLoggedIn }) {
+function NavBar({
+  currentUser,
+  setIsLoggedIn,
+  setCurrentUser,
+  isLoggedIn,
+  setIsRightTrayVisible,
+  isRightTrayVisible,
+}) {
   const navigate = useNavigate();
-  const [isRightTrayVisible, setIsRightTrayVisible] = useState(false);
+
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
 
   const handleRightTrayClick = () => {
@@ -25,7 +32,7 @@ function NavBar({ currentUser, setIsLoggedIn, setCurrentUser, isLoggedIn }) {
   return (
     <>
       <div>
-        <div className="h-4 bg-black"></div>
+        <div className="h-4 bg-lime-900 w-screen"></div>
         <div className="flex justify-between items-center p-4">
           <div className="flex items-center">
             <button
@@ -39,7 +46,7 @@ function NavBar({ currentUser, setIsLoggedIn, setCurrentUser, isLoggedIn }) {
             <a href="#">
               <img
                 src={logo}
-                className="p-2 h-auto w-14 leading-4"
+                className="pl-4 p-2 h-auto w-14 leading-4"
                 alt="Logo"
                 onClick={() => {
                   navigate("/");

@@ -105,6 +105,27 @@ class UserPlants(Resource):
 
         return {"message": "Plant added to collection successfully."}, 201
 
+class UpdatePlantName(Resource):
+    def put(self, user_id):
+        plant_id = request.args.get('plant_id')
+        new_plant_name = request.json.get('plant_name')
+
+        if not plant_id:
+            return {"error": "Plant ID not provided."}, 400
+
+        if not new_plant_name:
+            return {"error": "New plant name not provided."}, 400
+
+        user_plant = UserPlant.query.get(plant_id)
+
+        if not user_plant or user_plant.user_id != user_id:
+            return {"error": "Plant not found in the user's collection."}, 404
+
+        user_plant.plant_name = new_plant_name
+        db.session.commit()
+
+        return {"message": "Plant name updated successfully."}, 200
+
 # class PlantSearch(Resource):
 #     def search_plants():
 #         search_term = request.args.get('q', '')
@@ -133,7 +154,7 @@ class UserPlants(Resource):
 api.add_resource(Plants, '/plants')
 api.add_resource(IndPlants, '/plants/<int:id>')
 api.add_resource(UserPlants, '/plants/user/<int:user_id>')
-# api.add_resource(PlantSearch, '/plants/search')
+api.add_resource(UpdatePlantName, '/plants/user/<int:user_id>')
 
 api.add_resource(Login, '/login')
 api.add_resource(Logout, '/logout')

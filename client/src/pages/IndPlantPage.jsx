@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import IndPlantCard from "../components/IndPlantCard";
+import NoAccess from "./NoAccess";
 
-function IndPlantPage({ currentUser }) {
+function IndPlantPage({ currentUser, isLoggedIn }) {
   const [plant, setPlant] = useState(null);
   const { id } = useParams();
 
   useEffect(() => {
-    console.log("ID:", id); // Check if the ID parameter is being received correctly
+    console.log("ID:", id);
 
     const fetchIndPlant = async () => {
       try {
         const res = await fetch(`/api/plants/${id}`);
         if (res.ok) {
           const plantData = await res.json();
-          console.log("Plant Data:", plantData); // Check if the API call is returning the expected data
+          console.log("Plant Data:", plantData);
           setPlant(plantData);
         } else {
           setPlant(null);
@@ -25,6 +26,10 @@ function IndPlantPage({ currentUser }) {
     };
     fetchIndPlant();
   }, [id]);
+
+  if (!isLoggedIn) {
+    return <NoAccess />;
+  }
 
   return (
     <div>

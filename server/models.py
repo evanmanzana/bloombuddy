@@ -24,6 +24,7 @@ class User(db.Model, SerializerMixin):
     username = db.Column(db.String)
     email = db.Column(db.String)
     _password_hash = db.Column(db.String)
+    # img = db.Column(db.String)
 
     @hybrid_property
     def password_hash(self):
@@ -102,10 +103,10 @@ class UserPlant(db.Model, SerializerMixin):
     care_task_id = db.Column(db.Integer, db.ForeignKey('care_tasks.id'), nullable=True)
     plant_name = db.Column(db.Integer, nullable=True)
 
-    # Define relationships with User, Plant, and CareTask models
+  
     user = db.relationship('User', backref='user_plants')
     plant = db.relationship('Plant', backref='user_plants')
-    # care_task = db.relationship('CareTask', backref='user_plants')
+    
 
     serialize_rules = ("-user.user_plants", "-plant.user_plants")
 

@@ -51,7 +51,8 @@ def seed_users():
             name=fake.name(),
             username=fake.user_name(),
             email=fake.email(),
-            password_hash="password"
+            password_hash="password",
+            img=fake.image.url()
         )
         users.append(user)
 
@@ -135,6 +136,7 @@ def seed_user_plants(users):
                 care_task = CareTask(name=fake.word(), desc=fake.text(), completed=fake.boolean(), user=user)
                 care_task = db.session.merge(care_task)
                 care_tasks[plant.id] = care_task
+                
 
             # Flush the session to commit the CareTask objects to the database
             db.session.flush()

@@ -1,7 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import RightTray from "../components/RightTray";
 
-function NoAccess({ handleRightTrayClick }) {
+function NoAccess({
+  setIsLoggedIn,
+  currentUser,
+  isLoggedIn,
+  setCurrentUser,
+  setIsRightTrayVisible,
+  isRightTrayVisible,
+}) {
+  const handleRightTrayClick = () => {
+    setIsRightTrayVisible(!isRightTrayVisible);
+  };
+
+  const handleProfileButtonClick = () => {
+    setIsRightTrayVisible(true);
+  };
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="text-center">
@@ -16,14 +32,14 @@ function NoAccess({ handleRightTrayClick }) {
             </p>
           </Link>
           <p className="text-4xl font-ibarra p-5 ">Or</p>
-          <p
-            className="text-4xl font-ibarra p-5 hover:underline cursor-pointer"
-            onClick={() => {
-              handleRightTrayClick;
-            }}
-          >
-            Login?
-          </p>
+          <div className="">
+            <div
+              onClick={handleProfileButtonClick}
+              className="text-4xl font-ibarra p-5 hover:underline cursor-pointer"
+            >
+              Log In?
+            </div>
+          </div>
         </div>
       </div>
     </div>
