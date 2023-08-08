@@ -57,10 +57,10 @@ function NavBar({
               href="#"
               className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:underline"
               onClick={() => {
-                navigate("/collection");
+                navigate("/blooms");
               }}
             >
-              Collection
+              Blooms
             </a>
             <a
               href="#"
@@ -75,10 +75,10 @@ function NavBar({
               href="#"
               className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:underline"
               onClick={() => {
-                navigate("/tasks");
+                navigate("/buddies");
               }}
             >
-              Tasks
+              Buddies
             </a>
             <a
               href="#"

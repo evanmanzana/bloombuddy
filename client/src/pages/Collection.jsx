@@ -29,6 +29,7 @@ function Collection({
   }, [isLoggedIn, currentUser]);
 
   const handleDeletePlant = (plantId) => {
+    console.log(plantId);
     fetch(`/api/plants/user/${currentUser.id}?plant_id=${plantId}`, {
       method: "DELETE",
     })
@@ -38,7 +39,7 @@ function Collection({
         }
 
         setPlants((prevPlants) =>
-          prevPlants.filter((plant) => plant.plant.id !== plantId)
+          prevPlants.filter((plant) => plant.id !== plantId)
         );
       })
       .catch((error) => {
@@ -68,7 +69,7 @@ function Collection({
                 key={plant.plant.id}
                 className="grid grid-cols-1  rounded-md"
               >
-                <img src={plant.plant.img} className=" h-80 w-80 rounded-sm" />
+                <img src={plant.plant.img} className=" h-80 w-80 rounded-lg" />
                 <div className="grid grid-cols-2">
                   <div className="pt-2">
                     <p className=" text-2xl">
@@ -81,8 +82,8 @@ function Collection({
                   <div>
                     {" "}
                     <button
-                      className=" text-lime-800  mt-2 rounded-xl text-xl hover:underline"
-                      onClick={() => handleDeletePlant(plant.plant.id)}
+                      className=" text-lime-800  mt-2 rounded-xl text-xl hover:underline flex justify-center"
+                      onClick={() => handleDeletePlant(plant.id)}
                     >
                       Delete From Collection
                     </button>

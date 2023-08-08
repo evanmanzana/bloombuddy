@@ -1,6 +1,7 @@
 import React from "react";
 import PlantCard from "../components/PlantCard";
 import NoAccess from "./NoAccess";
+import SearchBar from "../components/SearchBar";
 
 function PlantPage({
   plants,

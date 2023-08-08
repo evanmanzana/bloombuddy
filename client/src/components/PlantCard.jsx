@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "./SearchBar"; // Adjust the path based on your file structure
 
 function PlantCard() {
   const [plants, setPlants] = useState([]);
+  const [filteredPlants, setFilteredPlants] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,6 +16,7 @@ function PlantCard() {
         }
         const myPlants = await res.json();
         setPlants(myPlants);
+        setFilteredPlants(myPlants); // Initialize filteredPlants with all plants
       } catch (error) {
         console.log("Error fetching plants:", error);
       }
@@ -21,6 +24,17 @@ function PlantCard() {
 
     fetchPlants();
   }, []);
+
+  const handleSearch = (searchTerm) => {
+    const filtered = plants.filter(
+      (plant) =>
+        JSON.parse(plant.common_names)?.some((name) =>
+          name.toLowerCase().includes(searchTerm.toLowerCase())
+        ) || plant.latin.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setFilteredPlants(filtered);
+  };
 
   function getIndPlant(id) {
     const fetchIndPlant = async (id) => {
@@ -30,7 +44,7 @@ function PlantCard() {
           throw new Error("Failed to fetch individual plant");
         }
         const myIndPlant = await res.json();
-        navigate(`/plant/${id}`);
+        navigate(`/plants/${id}`);
       } catch (error) {
         console.log("Error fetching individual plant:", error);
       }
@@ -40,9 +54,10 @@ function PlantCard() {
 
   return (
     <>
+      <SearchBar onSearch={handleSearch} />
       <div className="flex items-center justify-center font-ibarra">
         <div className="grid grid-cols-4 gap-4 p-6">
-          {plants.map((plant) => (
+          {filteredPlants.map((plant) => (
             <div
               key={plant.id}
               onClick={() => getIndPlant(plant.id)}
@@ -54,7 +69,7 @@ function PlantCard() {
               }}
             >
               <div
-                className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-0 hover:opacity-20 transition-opacity"
+                className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-0 hover:opacity-20 transition-transform"
                 style={{
                   backdropFilter: "blur(5px)", // Adjust blur as needed
                 }}
@@ -65,13 +80,11 @@ function PlantCard() {
                 className="w-full h-80 rounded-md"
               />
               <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-black text-center opacity-0 hover:opacity-100 transition-opacity">
-                <p className="font-bold text-white text-4xl bg-gray-500">
+                <p className="font-bold text-amber-50 text-4xl bg-slate-500 rounded-lg p-1">
                   {JSON.parse(plant.common_names)
                     ? JSON.parse(plant.common_names)[0]
                     : plant.latin}
                 </p>
-                {/* <p className="font-bold">Latin name: {plant.latin}</p>
-                <p className="font-bold">Plant Family: {plant.family}</p> */}
               </div>
             </div>
           ))}

@@ -3,6 +3,9 @@ from app import app, db, User, Plant, CareLog, CareTask, UserPlant
 from faker import Faker
 import json
 import time
+from PIL import Image
+from io import BytesIO
+import os
 from config import api_key
 from random import random, randint, sample, choice as rc
 fake = Faker()
@@ -43,16 +46,38 @@ def  fetch_data_from_api_id(item):
         print("Failed to fetch data from the API.")
         return None
 
+def download_and_save_image(url, save_path):
+    response = requests.get(url)
+    image = Image.open(BytesIO(response.content))
+
+    # Convert the image to RGB mode (JPEG supports RGB mode)
+    image = image.convert('RGB')
+
+    # Save the image as JPEG using an absolute path
+    image.save(save_path, format='JPEG')
 
 def seed_users():
     users = []
-    for _ in range(10):
+    # Use an absolute path for save_dir
+    save_dir = os.path.abspath("../client/public/path_to_save_images")
+
+    # Create the directory if it doesn't exist
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
+
+    for _ in range(5):
+        fake_img_url = fake.image_url(width=200, height=200)  # Generate a fake image URL with desired width and height
+        user_img_filename = f"user_{fake.random_number()}.jpg"  # Generate a random filename for the image
+        user_img_save_path = os.path.join(save_dir, user_img_filename)
+
+        download_and_save_image(fake_img_url, user_img_save_path)
+
         user = User(
             name=fake.name(),
             username=fake.user_name(),
             email=fake.email(),
             password_hash="password",
-            img=fake.image.url()
+            img=f'/path_to_save_images/{user_img_filename}'  # Save the local image path in the img field
         )
         users.append(user)
 
@@ -61,7 +86,8 @@ def seed_users():
         name="Evan Manzanares",
         username="test",
         email="test@test.com",
-        password_hash="password"
+        password_hash="password",
+        img="/path_to_save_images/user_11.jpg"
     )
     users.append(preset_user)
 

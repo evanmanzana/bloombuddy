@@ -71,7 +71,10 @@ function RightTray({
       <div className="">
         <div className="grid grid-cols-2">
           <p className="pt-8 text-xl">Welcome,</p>
-          <img className="pt-4 pl-4 h-auto w-14" src={currentUser.img} />
+          <img
+            className=" ml-4 h-16 w-16 border-amber-50 border-2 rounded-full"
+            src={currentUser.img}
+          />
         </div>
         <div className="text-xl border-b-2 border-amber-50 ">
           {currentUser.name}

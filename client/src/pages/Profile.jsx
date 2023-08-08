@@ -56,6 +56,7 @@ function Profile({ currentUser, isLoggedIn }) {
   return (
     <Formik
       initialValues={{
+        image: currentUser.img,
         name: currentUser.name,
         email: currentUser.email,
       }}
@@ -64,6 +65,7 @@ function Profile({ currentUser, isLoggedIn }) {
     >
       {({ isSubmitting }) => (
         <Form>
+          <div></div>
           <div className="pl-24 pt-8 font-ibarra">
             <label htmlFor="name">Name: </label>
             <Field type="text" id="name" name="name" />

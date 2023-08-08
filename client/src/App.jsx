@@ -8,7 +8,7 @@ import PlantPage from "./pages/PlantPage";
 import IndPlantPage from "./pages/IndPlantPage";
 import NavBar from "./components/NavBar";
 import Collection from "./pages/Collection";
-import Tasks from "./pages/Tasks";
+import TaskPage from "./pages/TaskPage";
 import Blog from "./pages/Blog";
 
 function App() {
@@ -61,7 +61,7 @@ function App() {
             isRightTrayVisible={isRightTrayVisible}
           />
           <Route
-            path="/collection"
+            path="/blooms"
             element={
               <Collection
                 isLoggedIn={isLoggedIn}
@@ -84,7 +84,7 @@ function App() {
             }
           />
           <Route
-            path="/plant/:id"
+            path="/plants/:id"
             element={
               <IndPlantPage
                 currentUser={currentUser}
@@ -106,9 +106,9 @@ function App() {
             }
           />
           <Route
-            path="/tasks"
+            path="/buddies"
             element={
-              <Tasks
+              <TaskPage
                 currentUser={currentUser}
                 isLoggedIn={isLoggedIn}
                 setIsRightTrayVisible={setIsRightTrayVisible}
