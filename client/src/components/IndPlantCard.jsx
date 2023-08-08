@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import logo from "../assets/bloombuddy.png";
+import Modal from "react-modal";
 
 function IndPlantCard({ plant, currentUser }) {
+  const navigate = useNavigate();
+  const [isAdded, setIsAdded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleAddToCollection = () => {
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" }, // Set the Content-Type header to JSON
-      body: JSON.stringify({ plant_id: plant.id }), // Send the plant_id in the request body
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ plant_id: plant.id }),
     };
 
     fetch(`/api/plants/user/${currentUser.id}`, requestOptions)
@@ -17,11 +24,17 @@ function IndPlantCard({ plant, currentUser }) {
       })
       .then((data) => {
         console.log("Plant added to collection:", data);
-        // Handle any success message or state updates as needed
+        setIsAdded(true); // Set the state to indicate the plant has been added
+        setIsModalOpen(true); // Open the modal popup
       })
       .catch((error) => {
         console.error("Error adding plant to collection:", error);
       });
+  };
+
+  const closeModalAndRedirect = () => {
+    setIsModalOpen(false); // Close the modal
+    navigate("/blooms"); // Redirect to the /blooms page
   };
 
   return (
@@ -37,49 +50,68 @@ function IndPlantCard({ plant, currentUser }) {
             : plant.latin}
         </p>
         <div className="flex justify-center">
-          {" "}
-          {/* Center the img */}
           <img src={plant.img} className="w-64 h-64 rounded-lg mb-4" />
         </div>
         <div className="text-black flex justify-center">
           {" "}
-          {/* Center the Plant Family */}
           Plant Family: {plant.family}
         </div>
         <div className="text-black flex justify-center">
           {" "}
-          {/* Center the Category */}
           Category: {plant.category}
         </div>
         <div className="text-black flex justify-center">
           {" "}
-          {/* Center the Origin */}
           Origin: {plant.origin}
         </div>
         <div className="text-black flex justify-center">
           {" "}
-          {/* Center the Climate */}
           Climate: {plant.climate}
         </div>
         <div className="text-black flex justify-center">
           {" "}
-          {/* Center the Ideal Lighting */}
           Ideal Lighting: {plant.ideal_light}
         </div>
         <div className="text-black flex justify-center">
           {" "}
-          {/* Center the Watering Instructions */}
           <p>Watering Instructions: {plant.watering}</p>
         </div>
         <div className="flex justify-center">
           {" "}
-          {/* Center the button */}
-          <button
-            className="border-black border-2 rounded-md"
-            onClick={handleAddToCollection}
-          >
-            Add to Your Collection!
-          </button>
+          <div className="flex justify-center">
+            <button
+              className="border-black border-2 rounded-md"
+              onClick={handleAddToCollection}
+            >
+              Add to Your Collection!
+            </button>
+            {isAdded && (
+              <Modal
+                isOpen={isModalOpen}
+                onRequestClose={closeModalAndRedirect}
+                className="fixed inset-0 flex items-center justify-center z-50"
+              >
+                <div className="bg-white p-6 rounded-md shadow-md">
+                  <div className="text-center">
+                    <img src={logo} alt="Logo" className="mx-auto mb-4" />
+                    <p className="text-green-500 text-sm">
+                      Added{" "}
+                      {JSON.parse(plant.common_names)
+                        ? JSON.parse(plant.common_names)[0]
+                        : plant.latin}{" "}
+                      to your collection
+                    </p>
+                    <button
+                      className="mt-4 bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2"
+                      onClick={closeModalAndRedirect}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </Modal>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -1,91 +1,28 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
-function Menu({ currentUser, currentName, toNavigate }) {
+function Menu({ currentUser, currentPlant, toNavigate }) {
   const { id1, id } = useParams();
   const location = useLocation();
-  const [displayCourse, setDisplayCourse] = useState();
+  const [displayPlant, setDisplayPlant] = useState();
   const studentInfo = location.state?.studentInfo || null;
 
   const navigate = useNavigate();
-  const courseId = location.pathname.split("/")[2];
+  const plantId = location.pathname.split("/")[2];
 
   const getCurrentComponent = () => {
     const component = location.pathname.split("/")[1];
     return component.charAt(0).toUpperCase() + component.slice(1);
   };
-  return currentName ? (
-    id1 ? (
-      <>
-        <div className="pl-24 pt-8 flex flex-row cursor-pointer">
-          <div>
-            <p className="text-xl ">
-              <img
-                className="h-10 w-10 "
-                src="https://www.svgrepo.com/show/511004/hamburger-md.svg"
-              />{" "}
-              <button
-                className="hover:underline"
-                onClick={() => navigate(toNavigate)}
-              >
-                {getCurrentComponent()}
-              </button>
-              {"   "}
-              {">"}
-              {"   "}
-              <button
-                className="hover:underline"
-                onClick={() => navigate(`/courses/${courseId}`)}
-              >
-                {currentName}
-              </button>
-              {"   "}
-              {">"}
-              {"   "}
-              {"Students"}
-              {"   "}
-              {">"}
-              {"   "}
-              {studentInfo.name}
-            </p>
-          </div>
-        </div>
-      </>
-    ) : (
-      <>
-        <div className="pl-24 pt-8 flex flex-row cursor-pointer">
-          <div>
-            <p className="text-xl ">
-              <img
-                className="h-10 w-10 "
-                src="https://www.svgrepo.com/show/511004/hamburger-md.svg"
-              />{" "}
-              <button
-                className="hover:underline"
-                onClick={() => navigate(toNavigate)}
-              >
-                {getCurrentComponent()}
-              </button>
-              {"   "}
-              {">"}
-              {"   "}
-              {currentName}
-            </p>
-          </div>
-        </div>
-      </>
-    )
-  ) : (
+  return (
     <>
-      <div className="pl-24 pt-8 flex flex-row cursor-pointer">
-        <div>
-          <p className="text-xl">
-            <img
-              className="h-10 w-10"
-              src="https://www.svgrepo.com/show/511004/hamburger-md.svg"
-              // onClick={}
-            />{" "}
-            <button onClick={() => navigate(toNavigate)}>
+      <div className="pl-24 pt-8 grid grid-cols-2 cursor-pointer font-ibarra">
+        <div className="">
+          <p className="text-xl grid grid-cols-2 gap-0">
+            <button
+              className="text-left hover:underline"
+              onClick={() => navigate(toNavigate)}
+            >
               {getCurrentComponent()}
             </button>
             {"   "}

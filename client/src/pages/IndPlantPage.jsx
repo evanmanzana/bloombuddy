@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import IndPlantCard from "../components/IndPlantCard";
 import NoAccess from "./NoAccess";
+import Menu from "../components/Menu";
 
 function IndPlantPage({ currentUser, isLoggedIn }) {
   const [plant, setPlant] = useState(null);
@@ -34,7 +35,10 @@ function IndPlantPage({ currentUser, isLoggedIn }) {
   return (
     <div>
       {plant ? (
-        <IndPlantCard plant={plant} currentUser={currentUser} />
+        <>
+          <Menu toNavigate={"/plants"} />
+          <IndPlantCard plant={plant} currentUser={currentUser} />
+        </>
       ) : (
         <div>Loading...</div>
       )}

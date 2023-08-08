@@ -2,6 +2,7 @@ import React from "react";
 import PlantCard from "../components/PlantCard";
 import NoAccess from "./NoAccess";
 import SearchBar from "../components/SearchBar";
+import Menu from "../components/Menu";
 
 function PlantPage({
   plants,
@@ -22,6 +23,7 @@ function PlantPage({
   }
   return (
     <div>
+      <Menu toNavigate={"/plants"} />
       <PlantCard plants={plants} currentUser={currentUser} />
     </div>
   );

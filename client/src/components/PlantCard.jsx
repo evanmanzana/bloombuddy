@@ -55,36 +55,33 @@ function PlantCard() {
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      <div className="flex items-center justify-center font-ibarra">
+      <div className="flex justify-center items-center font-ibarra">
         <div className="grid grid-cols-4 gap-4 p-6">
           {filteredPlants.map((plant) => (
-            <div
-              key={plant.id}
-              onClick={() => getIndPlant(plant.id)}
-              className="border-2 border-green-900 rounded-lg hover:border-green-400 hover:cursor-pointer relative overflow-hidden "
-              style={{
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                transition: "backdrop-filter 0.5s",
-              }}
-            >
-              <div
-                className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-0 hover:opacity-20 transition-transform"
-                style={{
-                  backdropFilter: "blur(5px)", // Adjust blur as needed
-                }}
-              />
+            <div key={plant.id} className=" w-80">
               <img
+                onClick={() => getIndPlant(plant.id)}
                 src={plant.img}
-                alt="Plant"
-                className="w-full h-80 rounded-md"
+                className=" h-80 w-80 rounded-lg"
               />
-              <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-black text-center opacity-0 hover:opacity-100 transition-opacity">
-                <p className="font-bold text-amber-50 text-4xl bg-slate-500 rounded-lg p-1">
-                  {JSON.parse(plant.common_names)
-                    ? JSON.parse(plant.common_names)[0]
-                    : plant.latin}
-                </p>
+              <div className="grid grid-cols-2">
+                <div className="pt-2">
+                  <p className=" text-2xl">
+                    {JSON.parse(plant.common_names)
+                      ? JSON.parse(plant.common_names)[0]
+                      : plant.latin}
+                  </p>
+                  <p className="">{plant.latin}</p>
+                </div>
+                <div>
+                  {" "}
+                  <div
+                    onClick={() => getIndPlant(plant.id)}
+                    className=" text-lime-800  mt-2 rounded-xl text-xl hover:underline text-center flex justify-right cursor-pointer"
+                  >
+                    <p>Click for more info!</p>
+                  </div>
+                </div>
               </div>
             </div>
           ))}

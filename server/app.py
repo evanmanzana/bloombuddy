@@ -58,9 +58,12 @@ class CheckSession(Resource):
         user_id = session.get("user_id")
         if user_id:
             user = User.query.filter(User.id == user_id).first()
-            return user.to_dict()
+            if user:
+                return user.to_dict(), 200
+            else:
+                return {"message": "User not found"}, 404
         else:
-            return {}, 401
+            return {"message": "Unauthorized"}, 401
 
 
 class Plants(Resource):
