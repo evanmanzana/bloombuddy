@@ -1,7 +1,13 @@
 import React from "react";
 import NoAccess from "./NoAccess";
+import UserTasks from "../components/UserTasks";
 
-function TaskPage({ isLoggedIn, isRightTrayVisible, setIsRightTrayVisible }) {
+function TaskPage({
+  isLoggedIn,
+  isRightTrayVisible,
+  setIsRightTrayVisible,
+  currentUser,
+}) {
   if (!isLoggedIn) {
     return (
       <NoAccess
@@ -12,9 +18,11 @@ function TaskPage({ isLoggedIn, isRightTrayVisible, setIsRightTrayVisible }) {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen font-ibarra">
-      <div className="text-center">
-        <h2 className="text-4xl ">This will be a TaskPage Page</h2>
+    <div className="">
+      <div className="">
+        <div className="">
+          <UserTasks currentUser={currentUser} />
+        </div>
       </div>
     </div>
   );

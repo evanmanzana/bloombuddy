@@ -55,16 +55,17 @@ function NavBar({
             </a>
             <a
               href="#"
-              className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:underline"
+              className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:drop-shadow-2xl hover:underline transition transform hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:transform-none ... "
               onClick={() => {
                 navigate("/blooms");
               }}
             >
               Blooms
             </a>
+
             <a
               href="#"
-              className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:underline"
+              className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:drop-shadow-2xl hover:underline transition transform hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:transform-none ... "
               onClick={() => {
                 navigate("/plants");
               }}
@@ -73,7 +74,7 @@ function NavBar({
             </a>
             <a
               href="#"
-              className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:underline"
+              className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:drop-shadow-2xl hover:underline transition transform hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:transform-none ... "
               onClick={() => {
                 navigate("/buddies");
               }}
@@ -82,7 +83,7 @@ function NavBar({
             </a>
             <a
               href="#"
-              className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:underline"
+              className="ml-2 p-4 pt-4 text-2xl font-ibarra leading-4 hover:drop-shadow-2xl hover:underline transition transform hover:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:transform-none ... "
               onClick={() => {
                 navigate("/blog");
               }}

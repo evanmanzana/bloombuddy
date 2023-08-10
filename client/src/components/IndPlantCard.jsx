@@ -101,12 +101,26 @@ function IndPlantCard({ plant, currentUser }) {
                         : plant.latin}{" "}
                       to your collection
                     </p>
-                    <button
-                      className="mt-4 bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2"
-                      onClick={closeModalAndRedirect}
-                    >
-                      Close
-                    </button>
+                    <div className="flex justify-between mt-4">
+                      <button
+                        className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2"
+                        onClick={() => {
+                          closeModalAndRedirect();
+                          navigate("/plants");
+                        }}
+                      >
+                        Continue looking at plants
+                      </button>
+                      <button
+                        className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2"
+                        onClick={() => {
+                          closeModalAndRedirect();
+                          navigate("/blooms"); // Redirect to /blooms
+                        }}
+                      >
+                        View your blooms
+                      </button>
+                    </div>
                   </div>
                 </div>
               </Modal>

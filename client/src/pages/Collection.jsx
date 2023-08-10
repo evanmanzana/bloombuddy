@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import NoAccess from "./NoAccess";
+import AddCareTask from "../components/AddCareTask";
 
 function Collection({
   isLoggedIn,
@@ -8,6 +9,7 @@ function Collection({
   setIsRightTrayVisible,
 }) {
   const [plants, setPlants] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (isLoggedIn && currentUser) {
@@ -19,7 +21,7 @@ function Collection({
           return response.json();
         })
         .then((data) => {
-          console.log("Fetched user plants:", data.user_plants);
+          // console.log("Fetched user plants:", data.user_plants);
           setPlants(data.user_plants);
         })
         .catch((error) => {
@@ -29,7 +31,7 @@ function Collection({
   }, [isLoggedIn, currentUser]);
 
   const handleDeletePlant = (plantId) => {
-    console.log(plantId);
+    // console.log(plantId);
     fetch(`/api/plants/user/${currentUser.id}?plant_id=${plantId}`, {
       method: "DELETE",
     })
@@ -37,14 +39,30 @@ function Collection({
         if (!response.ok) {
           throw new Error("Failed to delete plant from collection.");
         }
-
-        setPlants((prevPlants) =>
-          prevPlants.filter((plant) => plant.id !== plantId)
+        setTimeout(
+          () =>
+            setPlants((prevPlants) =>
+              prevPlants.filter((plant) => plant.id !== plantId)
+            ),
+          100
         );
       })
       .catch((error) => {
         console.error("Error deleting plant:", error);
       });
+  };
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Render the modal content
+  const renderModalContent = () => {
+    return <div className="modal">{/* Your form content here */}</div>;
   };
 
   if (!isLoggedIn) {
@@ -55,20 +73,18 @@ function Collection({
       />
     );
   }
+  console.log(plants);
 
   return (
     <div className="flex items-center justify-center font-ibarra">
       <div>
-        <h2 className="text-4xl text-green-800 flex justify-center  pb-2">
+        <h2 className="text-4xl text-green-800 flex justify-center pb-2">
           Your Blooms
         </h2>
         {plants.length > 0 ? (
           <div className="grid grid-cols-4 gap-4 p-6 justify-center">
             {plants.map((plant) => (
-              <div
-                key={plant.plant.id}
-                className="grid grid-cols-1  rounded-md"
-              >
+              <div key={plant.id} className="grid grid-cols-1  rounded-md">
                 <img src={plant.plant.img} className=" h-80 w-80 rounded-lg" />
                 <div className="grid grid-cols-2">
                   <div className="pt-2">
@@ -77,7 +93,9 @@ function Collection({
                         ? JSON.parse(plant.plant.common_names)[0]
                         : plant.latin}
                     </p>
+
                     <p className="">{plant.plant.latin}</p>
+                    <AddCareTask userPlantId={plant} />
                   </div>
                   <div>
                     {" "}
