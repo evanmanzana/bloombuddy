@@ -10,7 +10,7 @@ from flask import (
 from flask_migrate import Migrate
 from models import Plant, User, CareTask, CareLog, UserPlant
 import os
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
@@ -21,6 +21,8 @@ from flask_login import (
     logout_user,
     current_user,
 )
+import json
+import dateutil.parser
 
 from config import app, db, api, CORS
 
@@ -165,30 +167,49 @@ class UpdatePlantName(Resource):
 
 class CreateTask(Resource):
     def post(self):
-        data = request.json
-        title = data.get("title")
-        description = data.get("description")
-        due_date = data.get("due_date")
-        user_plant_id = data.get(
-            "user_plant_id"
-        )  # Assuming you pass the user plant ID in the request
+        task_data = request.json
 
-        if not title or not description or not due_date or not user_plant_id:
-            return {"error": "Missing required fields."}, 400
+        # Get the user plant id from the user plant object.
+        user_plant_id = task_data["user_plant_id"]["id"]
 
-        user_plant = UserPlant.query.get(user_plant_id)
+        # Get the user id from the user plant object.
+        user_id = task_data["user_plant_id"]["user_id"]
 
-        if not user_plant:
-            return {"error": "User plant not found."}, 404
+        # Get the plant name from the plant_name object.
+        plant_name = task_data["user_plant_id"]["plant_name"]
+        if not plant_name:
+            plant_name = task_data["user_plant_id"]["plant"]["common_names"][0]
+
+        # Convert the user_plant_id parameter to a string.
+        user_plant_id_string = json.dumps(user_plant_id)
 
         new_task = CareTask(
-            name=title, desc=description, completed=False, user_id=user_plant_id
+            name=task_data.get("name"),
+            desc=task_data.get("desc"),
+            due_date=dateutil.parser.isoparse(task_data.get("due_date")),
+            user_id=user_id,
+            user_plant_id=user_plant_id_string,
+            # plant_name=plant_name,
         )
 
         db.session.add(new_task)
+        try:
+            db.session.commit()
+            return {"message": "Task created successfully"}, 201
+        except Exception as e:
+            db.session.rollback()  # Rollback the transaction on error
+            return {"error": "Error creating task: " + str(e)}, 500
+
+    def delete(self, task_id):
+        task = CareTask.query.get(task_id)
+
+        if not task:
+            return {"error": "Task not found."}, 404
+
+        db.session.delete(task)
         db.session.commit()
 
-        return {"message": "Task created successfully."}, 201
+        return {"message": "Task deleted successfully."}, 204
 
 
 class GetUserTasks(Resource):
@@ -206,6 +227,7 @@ class GetUserTasks(Resource):
                 "name": task.name,
                 "desc": task.desc,
                 "completed": task.completed,
+                "due_date": task.due_date.isoformat(),
             }
             task_list.append(task_data)
 
@@ -216,7 +238,7 @@ api.add_resource(Plants, "/plants")
 api.add_resource(IndPlants, "/plants/<int:id>")
 api.add_resource(UserPlants, "/plants/user/<int:user_id>")
 api.add_resource(UpdatePlantName, "/plants/user/<int:user_id>")
-api.add_resource(CreateTask, "/tasks")
+api.add_resource(CreateTask, "/tasks", "/tasks/<int:task_id>")
 api.add_resource(GetUserTasks, "/user/<int:user_id>/tasks")
 
 

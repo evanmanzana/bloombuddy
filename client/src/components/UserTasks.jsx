@@ -57,7 +57,10 @@ function UserTasks({ currentUser }) {
               <div className="grid grid-cols-1 rounded-md" key={task.task_id}>
                 <p>Task: {task.name}</p>
                 <p>Description: {task.desc}</p>
-                <p>Completed: {task.completed ? "Yes" : "No"}</p>
+                <p>Due Date: {task.due_date}</p>
+                <p>
+                  Completed? {task.completed ? <p>All done!</p> : <p>Nope!</p>}
+                </p>
                 <button onClick={() => handleDeleteTask(task.task_id)}>
                   Delete
                 </button>

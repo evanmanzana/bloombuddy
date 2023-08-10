@@ -115,6 +115,7 @@ class CareTask(db.Model):
     name = db.Column(db.String)
     desc = db.Column(db.String)
     completed = db.Column(db.Boolean)
+    due_date = db.Column(db.DateTime)  # Add the due_date field
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user_plant_id = db.Column(db.Integer, db.ForeignKey("user_plants.id"))
 

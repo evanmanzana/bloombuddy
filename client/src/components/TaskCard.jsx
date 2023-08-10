@@ -20,7 +20,9 @@ function TaskCard({ currentUser }) {
     <div className="">
       <h1>Your Tasks</h1>
       {tasks.length === 0 ? (
-        <p>No tasks found.</p>
+        <p className="flex justify-center text-4xl pt-6">
+          Looks like you don't have a collection yet!
+        </p>
       ) : (
         <ul>
           {tasks.map((task) => (
