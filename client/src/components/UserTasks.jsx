@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import plantName from "./AddCareTask";
 
 function UserTasks({ currentUser }) {
   const [userTasks, setUserTasks] = useState([]);
@@ -55,6 +56,7 @@ function UserTasks({ currentUser }) {
           <div className="grid grid-cols-4 gap-4 p-6 justify-center">
             {userTasks.map((task) => (
               <div className="grid grid-cols-1 rounded-md" key={task.task_id}>
+                <p>{plantName}</p>
                 <p>Task: {task.name}</p>
                 <p>Description: {task.desc}</p>
                 <p>Due Date: {task.due_date}</p>

@@ -228,6 +228,7 @@ class GetUserTasks(Resource):
                 "desc": task.desc,
                 "completed": task.completed,
                 "due_date": task.due_date.isoformat(),
+                "plant_id": task.user_plant_id,
             }
             task_list.append(task_data)
 
